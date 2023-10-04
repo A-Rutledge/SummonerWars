@@ -11,6 +11,16 @@ card_names = []
 targets = []
 total_damages = []
 
+#There is a bug here. rolls:\n(.+?)\n captures everything after rolls:\n which in the case of our log file, will incorrectly capture attacks that do 0 damage. I tried to account for it with the if statement, but it is not working properly
+#Sample log data:
+#Player 2 is attacking with Border Archer, targeting Enigma Sage.
+#Player 2 rolls:
+#Player 2 is attacking with Border Archer, targeting Enigma Sage.
+#Player 2 rolls:
+#Enigma Sage received 1 damage.
+
+#The first attack incorrectly parses due do capturing "Player 2 is attacking with Border Archer, targeting Enigma Sage" as the line where the damage comes from and extracts the 2. I will have to spend more time on working this out.
+
 # Define a regex pattern to extract relevant information from each action
 pattern = r"Player (\d+) is attacking with (.+?), targeting (.+?)\.\nPlayer \d+ rolls:\n(.+?)\n"
 
