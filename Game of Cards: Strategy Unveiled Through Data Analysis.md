@@ -34,8 +34,8 @@ I will work on getting this all displayed in a better way moving forward, but fo
 
 ### The Winning Player:
 I foresee this being helpful as more and more games start populating. It will help determine if 1st or 2nd player win more often (first player advantage) and will help me ensure I corellate the findings properly. It is possible the player that does the most damage does not win if they left their Summoner open for one big lethal attack from their opponent. The last attack in the game will always be the attack that destroys the Summoner, so it is very straightforward to get.
-![image](https://github.com/A-Rutledge/SummonerWars/assets/33138919/d0016cb4-6c54-48c4-83cd-fcd10d637c78)
 
+![image](https://github.com/A-Rutledge/SummonerWars/assets/33138919/d0016cb4-6c54-48c4-83cd-fcd10d637c78)
 
 
 ### Total Damage over the course of the game by each player:
@@ -79,6 +79,14 @@ This view shows how big of an impact using your limited attacks with the wrong c
 I find this particular game fascinating as both players ended with the same number of attacks made, but player 2 had a whopping 10 damage extra. What makes that even better is one of their attacks did 0 damage so they really managed to fully capitalize on their best cards.
 
 ## What's next?
+10/05
 That's all I have so far. I need to narrow down the metrics I want to focus on and spend some time building out the charts for them, but for now I need to finish the core parts of this. I will build out the dataframes to track movement next, followed by events played, magic built, and cards summoned. Once the core is fully built out, I can start pulling in more and more games to see how things start stacking up.
 
+10/06
+We made tons of progress today as we head into the weekend. I will have this knocked out in no time! Once I figured out how I was going to extract all the data I need, it was really just reusing the same logic and tweaking the RegEx to get all the different categories I wanted to track. I still need to work out the new select statements now that all of the details are in one big dataframe, but I did manage to get this really fun view out of it:
 
+![image](https://github.com/A-Rutledge/SummonerWars/assets/33138919/a3614798-a85e-460f-8851-b83590609783)
+
+Looking at details like this game by game would be great, so I need to deep dive into Pandas over the weekend and see how to properly group this data. I can tell already I am not doing things as efficiently as I can in Pandas. I have given each game a unique id that we can use to reference them (it's based on the name of the csv file, so that will need work in the future so it's not just game (8).csv and so on. I am interested to learn how powerful grouping is and if I can group by the game ID and then further group/aggregate to see stats like this for all the games at once. Although the big test I will be doing is validating the other games that I pulled to ensure that none of the other Factions create edge cases I didn't account for when designing the parser. I know for a fact my event tracker does not track all of the interactions events cause, but events in Summoner Wars are so powerful and so varied from faction to faction that I may just have to settle for "good enough".
+
+I am ahead of schedule for my goal of getting the core system working by the 10th. There is a tournment starting that I want to track the stats for and I think it will be really interesting. By the end of the month I will aim to automate the log extraction process and get the dashboard created, but for the upcoming week, I think I will be focusing on refining my Pandas skills to get the most value out of the data as possible.
