@@ -27,10 +27,17 @@ def clean_log_data(log_data):
             elif "rolls:" in line:
                 next_line_index = index + 1
                 if next_line_index < len(lines) and lines[next_line_index].startswith("Player"):
-                    preprocessed_log.append(line)  # Append the "rolls" line first
-                    preprocessed_log.append(f"{current_card_name} received 0 damage")  # Append the "takes 0 damage" line
-                    skip_next_line = True
-
+                    if "damage" not in lines[next_line_index]:
+                        if "rolls:" in lines[next_line_index]:
+                            preprocessed_log.append(line)  # Append the "rolls" line first
+                            del lines[next_line_index]
+                            #preprocessed_log.append(f"{current_card_name} rerolled")  # Append the "takes 0 damage" line
+                            skip_next_line = True
+                        else:
+                            preprocessed_log.append(line)  # Append the "rolls" line first
+                            preprocessed_log.append(f"{current_card_name} received 0 damage")  # Append the "takes 0 damage" line
+                            skip_next_line = True
+                            
         if not skip_next_line:
             preprocessed_log.append(line)
 
@@ -65,6 +72,7 @@ def parse_attack_data(preprocessed_log_data):
             player_id, card_name, target, rolls = match.groups()
             # Extract numeric attack values from the rolls
             damage_values = [int(roll.strip()) for roll in re.findall(r'\d+', rolls)]
+            #####print(rolls)
             for damage in damage_values:
                 attacks.append({
                     "Round": current_round,
@@ -90,7 +98,7 @@ def parse_movement_data(preprocessed_log_data):
     total_damages = []
 
     # Define a regex pattern to extract relevant information from each action
-    pattern = r"Player (\d+) (moved|forced) (.+?)\n"
+    pattern = r"Player (\d+) (moved|forced) (.+?).\n"
 
     # Initialize variables to store attack and damage data
     current_round = 0
@@ -153,7 +161,7 @@ def parse_summon_data(preprocessed_log_data):
     total_damages = []
 
     # Define a regex pattern to extract relevant information from each action
-    pattern = r"Player (\d+) summoned (.+?)\n"
+    pattern = r"Player (\d+) summoned (.+?).\n"
 
     # Initialize variables to store attack and damage data
     current_round = 0
@@ -212,7 +220,7 @@ def parse_event_data(preprocessed_log_data):
 
 def parse_csv_file(file_path):
     # Load the CSV file into a DataFrame
-    with open('C:/Users/Andrew/Downloads/SampleCSV/game_log(3).csv', 'r') as f:
+    with open(file_path, 'r') as f:
         log_data = f.read()
     
     df = pd.DataFrame()
