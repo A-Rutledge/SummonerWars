@@ -93,3 +93,7 @@ I am ahead of schedule for my goal of getting the core system working by the 10t
 
 10/07:
 Lots of QA testing today. Spent a lot of time combing through the game logs looking for any inaccuracies now that I have brought in many different factions. Each faction being able to break the rules in different ways is proving to be a challenge. Spent some time reading through pandas documentation and building out more metrics I can capture from the data. Still working on a way to get it all graphed.
+
+10/08:
+
+Added logic for tracking the number of cards destroyed. It's working in most cases, but Obsidian Dwarves are causing an issue with the "Wild Swing" ability. It does multiple instances of damage so it is not properly capturing the "was destroyed" text with the current logic. I can change it to just append player based off what round it is, but have not made that change yet.
