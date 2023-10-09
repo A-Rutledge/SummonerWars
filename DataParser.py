@@ -218,6 +218,40 @@ def parse_event_data(preprocessed_log_data):
     eventDF = pd.DataFrame(events)
     return eventDF
 
+def parse_destroyed_data(preprocessed_log_data):
+    # Split the log into individual actions
+    actions = re.split(r"Beginning of turn \d+\.", preprocessed_log_data)
+    # Initialize lists to store parsed data
+    player_ids = []
+
+    # Define a regex pattern to extract relevant information from each action
+    pattern = r"Player (\d+) rolls:\n(.+?)\n(.+?)\."
+
+    # Initialize variables to store attack and damage data
+    current_round = 0
+    destroy = []
+
+    # Iterate through actions and parse relevant data
+    for action in actions:
+        matches = re.finditer(pattern, action)
+        for match in matches:
+            player_id,damage,destroyed = match.groups()
+            # Extract numeric attack values from the rolls
+            if "destroyed" in destroyed:
+                card_name = re.match(r"(.+?) was",destroyed).groups()[0]
+                destroy.append({
+                "Round": current_round,
+                "PlayerID": int(player_id),
+                "CardName":card_name.strip(),
+                "Destroyed": 1
+                })
+        current_round += 1
+
+    # Convert parsed data to a DataFrame for analysis
+    destroyDF = pd.DataFrame(destroy)
+    return destroyDF
+
+
 def parse_csv_file(file_path):
     # Load the CSV file into a DataFrame
     with open(file_path, 'r') as f:
@@ -233,8 +267,9 @@ def parse_csv_file(file_path):
     magic_data = parse_magic_data(preprocessed_log_data)
     summon_data = parse_summon_data(preprocessed_log_data)
     event_data = parse_event_data(preprocessed_log_data)
+    destroy_data = parse_destroyed_data(preprocessed_log_data)
 
-    return attack_data, move_data, magic_data, summon_data, event_data
+    return attack_data, move_data, magic_data, summon_data, event_data, destroy_data
 
 
 
@@ -248,7 +283,7 @@ def process_multiple_csv_files(directory):
             file_path = os.path.join(directory, filename)
                         
             # Parse the CSV file and get the dataframes
-            attack_data, move_data, magic_data, summon_data, event_data = parse_csv_file(file_path)
+            attack_data, move_data, magic_data, summon_data, event_data, destroy_data = parse_csv_file(file_path)
 
             # Assign a unique ID to each game
             game_id = os.path.splitext(filename)[0]
@@ -259,9 +294,10 @@ def process_multiple_csv_files(directory):
             magic_data['GameID'] = game_id
             summon_data['GameID'] = game_id
             event_data['GameID'] = game_id
+            destroy_data['GameID'] = game_id
 
             # Append the dataframes to the list
-            all_data.extend([attack_data, move_data, magic_data, summon_data, event_data])
+            all_data.extend([attack_data, move_data, magic_data, summon_data, event_data, destroy_data])
 
     # Concatenate all dataframes into a single dataframe
     combined_data = pd.concat(all_data, ignore_index=True)
