@@ -109,3 +109,27 @@ And as a preview of what's to come, here is 16 games broken down into aggregates
 ![image](https://github.com/A-Rutledge/SummonerWars/assets/33138919/1893af00-d631-408e-bcdb-758d97a72eb0)
 
 I will need to append which Player won each game, but am trying to find a solution for that. In 95% of the cases, it is the player that attacked last, but there are a few occasions where the game ended due to a timeout which would incorrectly flag the wrong winner. 
+
+10/10:
+Did not have as much time to work on this today as I would have liked. I was able to get all previous calculations done on an individual game to scale properly across the dozens of games I am planning on bringing in. Here are some of the cool ones so far:
+
+Top Average Damage:
+
+![image](https://github.com/A-Rutledge/SummonerWars/assets/33138919/d8438fd1-e573-4c57-a171-d205f41f7fd2)
+
+
+Most Targeted:
+
+![image](https://github.com/A-Rutledge/SummonerWars/assets/33138919/399a9908-d2fa-416e-b9ed-af9b89bb8cf2)
+
+
+Most Attacks made:
+
+![image](https://github.com/A-Rutledge/SummonerWars/assets/33138919/e28cec29-86d0-470d-8cac-374b4585e14b)
+
+
+Here I wanted to highlight the issue of determining who won each game. This may be best handled in Tableau, but I am considering a dictionary and if the Summoner's name is in the "Target" column in the last row of the game, that means that faction loses:
+
+![image](https://github.com/A-Rutledge/SummonerWars/assets/33138919/07497911-2972-4481-bc48-451105bcecc7)
+
+Tomorrow I will be moving this to an s3 bucket and a database so I am not expecting to see many more graphs. Maybe just an average hit rate or something similar. Once I have the final view completed, I can get feedback from the game community and see what changes can be made.
