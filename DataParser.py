@@ -59,7 +59,8 @@ def parse_attack_data(preprocessed_log_data):
     total_damages = []
 
     # Define a regex pattern to extract relevant information from each action
-    pattern = r"Player (\d+) is attacking with (.+?), targeting (.+?)\.\nPlayer \d+ rolls:\n(.+?)\n"
+    pattern = r"Player (\d+) is attacking with (.+?), targeting (.+?)\.\nPlayer \d+ rolls:\n([\s\S]*?)(?=Player \d is attacking|$)"
+    #nPlayer 2 is attacking with Frost Mage, targeting Ember Guard.\nPlayer 2 rolls:\nEmber Guard received 4 damage.\nEmber Guard was destroyed.\nPlayer 2 discarded a card for magic.\nPlayer 2 discarded a card for magic.\nPlayer 2 discarded a card for magic.\n'
 
     # Initialize variables to store attack and damage data
     current_round = 0
@@ -70,18 +71,28 @@ def parse_attack_data(preprocessed_log_data):
         matches = re.finditer(pattern, action)
         for match in matches:
             player_id, card_name, target, rolls = match.groups()
-            # Extract numeric attack values from the rolls
-            damage_values = [int(roll.strip()) for roll in re.findall(r'\d+', rolls)]
-            #####print(rolls)
-            for damage in damage_values:
-                attacks.append({
-                    "Round": current_round,
-                    "PlayerID": int(player_id),
-                    "CardName": card_name.strip(),
-                    "Target": target.strip(),
-                    "Attack": 1,
-                    "DamageValue": damage
-                })
+            roll = rolls.split("\n")
+            damage = 0
+            destroyed = 0
+            discarded = 0
+            for r in roll:
+                if "damage" in r:
+                    number = re.search(r'\d+',r).group()
+                    damage += int(number)
+                elif "destroyed" in r:
+                    destroyed += 1
+                elif "magic" in r:
+                    discarded += 1
+            attacks.append({
+                "Round": current_round,
+                "PlayerID": int(player_id),
+                "CardName": card_name.strip(),
+                "Target": target.strip(),
+                "Attack": 1,
+                "DamageValue": damage,
+                "CardsDestroyed": destroyed,
+                "MagicBuilt": discarded
+            })
         current_round += 1
 
     # Convert parsed data to a DataFrame for analysis
@@ -122,34 +133,6 @@ def parse_movement_data(preprocessed_log_data):
     moveDF = pd.DataFrame(movement)
     return moveDF
 
-def parse_magic_data(preprocessed_log_data):
-    # Split the log into individual actions
-    actions = re.split(r"Beginning of turn \d+\.", preprocessed_log_data)
-    # Initialize lists to store parsed data
-    player_ids = []
-
-    # Define a regex pattern to extract relevant information from each action
-    pattern = r"Player (\d+) (discarded) a card for magic.\n"
-
-    # Initialize variables to store attack and damage data
-    current_round = 0
-    magic = []
-
-    # Iterate through actions and parse relevant data
-    for action in actions:
-        matches = re.finditer(pattern, action)
-        for match in matches:
-            player_id,discard = match.groups()
-            magic.append({
-            "Round": current_round,
-            "PlayerID": int(player_id),
-            "MagicBuilt": 1
-            })
-        current_round += 1
-
-    # Convert parsed data to a DataFrame for analysis
-    magicDF = pd.DataFrame(magic)
-    return magicDF
 
 def parse_summon_data(preprocessed_log_data):
     # Split the log into individual actions
@@ -210,46 +193,14 @@ def parse_event_data(preprocessed_log_data):
             events.append({
             "Round": current_round,
             "PlayerID": int(player_id),
-            "CardName": card_name.strip()
+            "CardName": card_name.strip(),
+            "Event": 1
             })
         current_round += 1
 
     # Convert parsed data to a DataFrame for analysis
     eventDF = pd.DataFrame(events)
     return eventDF
-
-def parse_destroyed_data(preprocessed_log_data):
-    # Split the log into individual actions
-    actions = re.split(r"Beginning of turn \d+\.", preprocessed_log_data)
-    # Initialize lists to store parsed data
-    player_ids = []
-
-    # Define a regex pattern to extract relevant information from each action
-    pattern = r"Player (\d+) rolls:\n(.+?)\n(.+?)\."
-
-    # Initialize variables to store attack and damage data
-    current_round = 0
-    destroy = []
-
-    # Iterate through actions and parse relevant data
-    for action in actions:
-        matches = re.finditer(pattern, action)
-        for match in matches:
-            player_id,damage,destroyed = match.groups()
-            # Extract numeric attack values from the rolls
-            if "destroyed" in destroyed:
-                card_name = re.match(r"(.+?) was",destroyed).groups()[0]
-                destroy.append({
-                "Round": current_round,
-                "PlayerID": int(player_id),
-                "CardName":card_name.strip(),
-                "Destroyed": 1
-                })
-        current_round += 1
-
-    # Convert parsed data to a DataFrame for analysis
-    destroyDF = pd.DataFrame(destroy)
-    return destroyDF
 
 
 def parse_csv_file(file_path):
@@ -264,12 +215,10 @@ def parse_csv_file(file_path):
     preprocessed_log_data = clean_log_data(log_data)
     attack_data = parse_attack_data(preprocessed_log_data)
     move_data = parse_movement_data(preprocessed_log_data)
-    magic_data = parse_magic_data(preprocessed_log_data)
     summon_data = parse_summon_data(preprocessed_log_data)
     event_data = parse_event_data(preprocessed_log_data)
-    destroy_data = parse_destroyed_data(preprocessed_log_data)
 
-    return attack_data, move_data, magic_data, summon_data, event_data, destroy_data
+    return attack_data, move_data, summon_data, event_data
 
 
 
@@ -283,7 +232,7 @@ def process_multiple_csv_files(directory):
             file_path = os.path.join(directory, filename)
                         
             # Parse the CSV file and get the dataframes
-            attack_data, move_data, magic_data, summon_data, event_data, destroy_data = parse_csv_file(file_path)
+            attack_data, move_data, summon_data, event_data = parse_csv_file(file_path)
 
             # Assign a unique ID to each game
             game_id = os.path.splitext(filename)[0]
@@ -291,13 +240,11 @@ def process_multiple_csv_files(directory):
             # Add the game ID to each dataframe
             attack_data['GameID'] = game_id
             move_data['GameID'] = game_id
-            magic_data['GameID'] = game_id
             summon_data['GameID'] = game_id
             event_data['GameID'] = game_id
-            destroy_data['GameID'] = game_id
 
             # Append the dataframes to the list
-            all_data.extend([attack_data, move_data, magic_data, summon_data, event_data, destroy_data])
+            all_data.extend([attack_data, move_data, summon_data, event_data])
 
     # Concatenate all dataframes into a single dataframe
     combined_data = pd.concat(all_data, ignore_index=True)
