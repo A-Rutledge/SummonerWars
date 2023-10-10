@@ -97,3 +97,15 @@ Lots of QA testing today. Spent a lot of time combing through the game logs look
 10/08:
 
 Added logic for tracking the number of cards destroyed. It's working in most cases, but Obsidian Dwarves are causing an issue with the "Wild Swing" ability. It does multiple instances of damage so it is not properly capturing the "was destroyed" text with the current logic. I can change it to just append player based off what round it is, but have not made that change yet.
+
+10/09:
+
+Changed logic for how the attack parser worked. Tundra Orcs and Obsidian Dwarves were causing issues with damage tracking. This led to doing damage,destroy, and build magic all in 1 check. IMPORTANT NOTE: This tracks every instance of damage, including damage to self and own cards. This is leading to larger numbers then seen on sw-zone.com for cards destroyed and damage values, but I feel it is a more accurate reflection of what the card does on average.
+
+The tournament starts tomorrow and will take at least 3 days before the majority of the games are finished. In that time, I can get as many stats tracked through the dataframe as I can think of and publish it to s3 buckets and a database. I am planning on using BigQuery as the free trial is more generous than Snowflake. After that will be the Tableau Dashboard to put the final level of polish on it. 
+
+And as a preview of what's to come, here is 16 games broken down into aggregates: 
+
+![image](https://github.com/A-Rutledge/SummonerWars/assets/33138919/1893af00-d631-408e-bcdb-758d97a72eb0)
+
+I will need to append which Player won each game, but am trying to find a solution for that. In 95% of the cases, it is the player that attacked last, but there are a few occasions where the game ended due to a timeout which would incorrectly flag the wrong winner. 
