@@ -133,3 +133,9 @@ Here I wanted to highlight the issue of determining who won each game. This may 
 ![image](https://github.com/A-Rutledge/SummonerWars/assets/33138919/07497911-2972-4481-bc48-451105bcecc7)
 
 Tomorrow I will be moving this to an s3 bucket and a database so I am not expecting to see many more graphs. Maybe just an average hit rate or something similar. Once I have the final view completed, I can get feedback from the game community and see what changes can be made.
+
+10/11:
+
+Spent the day getting the s3 buckets and database setup. Nothing to report on that yet as I still have quite a bit of work left with it. Also spent some time getting my personal website started. I did go ahead and try to implement faction tracking. It's still in the early stages, but here it is displaying the losing faction.
+
+![image](https://github.com/A-Rutledge/SummonerWars/assets/33138919/01f16644-2350-44e7-90f1-a602c67b89c4)
