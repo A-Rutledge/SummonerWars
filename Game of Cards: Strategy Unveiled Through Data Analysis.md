@@ -139,3 +139,18 @@ Tomorrow I will be moving this to an s3 bucket and a database so I am not expect
 Spent the day getting the s3 buckets and database setup. Nothing to report on that yet as I still have quite a bit of work left with it. Also spent some time getting my personal website started. I did go ahead and try to implement faction tracking. It's still in the early stages, but here it is displaying the losing faction.
 
 ![image](https://github.com/A-Rutledge/SummonerWars/assets/33138919/01f16644-2350-44e7-90f1-a602c67b89c4)
+
+
+10/12 Update:
+BigQuery database is almost done. I am having some trouble getting jupyter to run the jobs due to not being able to install the dependencies (pyarrow). Darn you GRPCIO constantly failing to build wheels or something. Troubleshooting that has taken the better part of the day unfortunately. I did however, manage to get all the factions tagged properly. I used the movement data to get a unique list of cards, and then compared that list against the summoners and assigned factions. For all factions, the owner of the faction is the faction is the only one that is able to "move" the summoner. Opponents can "force" it, but not "move" it. I used this to create the full list and it is working as intended. I will keep a close eye on if it breaks once I load in significantly more games.
+
+![image](https://github.com/A-Rutledge/SummonerWars/assets/33138919/6299c247-a67c-476a-a656-556da22b41e4)
+
+![image](https://github.com/A-Rutledge/SummonerWars/assets/33138919/84673c99-e545-48fd-bc01-5f9580ae9ab9)
+
+I don't think I will end up doing the join at this stage. I will probably keep the list of gameid,playerid,and faction as a separate table that can be referenced with smaller datasets as opposed to just smacking it on the whole thing where it will serve little purpose besides convenience.
+
+![image](https://github.com/A-Rutledge/SummonerWars/assets/33138919/bbbba48d-2d61-422d-b9ce-2615ab076d3b)
+
+
+
