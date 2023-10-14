@@ -152,5 +152,16 @@ I don't think I will end up doing the join at this stage. I will probably keep t
 
 ![image](https://github.com/A-Rutledge/SummonerWars/assets/33138919/bbbba48d-2d61-422d-b9ce-2615ab076d3b)
 
+10/13 update:
+
+The core functionality is officially finished! I have it doing everything I want and even have the Tableau Dashboard built out. The BigQuery issue was just me passing in one of the parameters incorrectly because the error code was saying it was caused by something else. 
+
+![image](https://github.com/A-Rutledge/SummonerWars/assets/33138919/5ed754af-9623-4e29-9131-21a3780a8639)
+
+Here it is working and query-able. I had to change plans anyways though, as the free version of Tableau is not able to be connected to BigQuery like it is in the full version. I ended up exporting the dataframes as .xlsx files and importing them that way. It works just fine and with only 15 games of records, it has no issues being slow. For the ongoing tournament, 90% of the games are finished and I'm already looking at pulling in 84 games so that will be the real test. Here is the link to the Tableau Dashboard: https://public.tableau.com/views/SummonerWarsGameDataAnalysis/GameAnalysis?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link
+
+![image](https://github.com/A-Rutledge/SummonerWars/assets/33138919/103f5381-30aa-4b56-ab2e-2a86afb48fed)
+
+
 
 
