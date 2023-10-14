@@ -23,3 +23,25 @@ link.download = 'game_log.csv';
 
 
 link.click();
+
+
+//-------------------------------------------------------------------------------
+
+//This pulls the links of every game that is labeled as a (W). This will prevent duplicate games as the games are listed for both players either as (W) or (L) depending on if you win or lose.
+// Create an empty array to store the links with "(W)".
+
+let winLinks = [];
+
+// Select all anchor elements in the document.
+const allLinks = document.querySelectorAll('a');
+
+// Loop through all the anchor elements.
+allLinks.forEach(link => {
+  // Check if the innerHTML of the link contains "(W)".
+  if (link.innerHTML.includes('(W)')) {
+    winLinks.push(link.href);
+  }
+});
+
+// Now, winLinks contains all the links with "(W)" in the innerHTML.
+console.log(winLinks);
