@@ -163,5 +163,6 @@ Here it is working and query-able. I had to change plans anyways though, as the 
 ![image](https://github.com/A-Rutledge/SummonerWars/assets/33138919/103f5381-30aa-4b56-ab2e-2a86afb48fed)
 
 
-
+10/14:
+Almost all the games in the first round of the tournament are done so I spent the day trying to get a web scraper setup with Selenium. I have been able to get 1 game done, but navigating to the next is proving to be a challenge. My goal is to get it sorted out tomorrow and scrape all the data on Monday when all the games are finished. That will be the true test of the system. I may try to setup some automated jobs, but with how infrequently it will be running, I don't think it's worth it. I can manually trigger the 3 jobs needed to load everything.
 
