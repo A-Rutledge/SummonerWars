@@ -166,3 +166,6 @@ Here it is working and query-able. I had to change plans anyways though, as the 
 10/14:
 Almost all the games in the first round of the tournament are done so I spent the day trying to get a web scraper setup with Selenium. I have been able to get 1 game done, but navigating to the next is proving to be a challenge. My goal is to get it sorted out tomorrow and scrape all the data on Monday when all the games are finished. That will be the true test of the system. I may try to setup some automated jobs, but with how infrequently it will be running, I don't think it's worth it. I can manually trigger the 3 jobs needed to load everything.
 
+10/15:
+
+Every game wrapped up so I did the full test of the data. I ran the code to get the list of links for the games, I ran the scraper to get the data from the games automatically, I ran the log parser, and then I uploaded it to Tableau. With a few minor tweaks, everything is working perfectly. I am going through and spot checking data to make sure it matches what is expected, but it is looking great! I am very excited to see it working and I have shared it with the Summoner Wars discord to get some valuable user testing and feedback. I may play with Airflow or something similar to create a 1 click trigger to run all the jobs, but Tableau will always be a manual update I'm pretty sure due to using the free version.
