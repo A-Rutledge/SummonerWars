@@ -76,8 +76,9 @@ def parse_attack_data(preprocessed_log_data):
             destroyed = 0
             discarded = 0
             for r in roll:
-                if "damage" in r:
-                    number = re.search(r'\d+',r).group()
+                number_match = re.search(r'\d+', r)
+                if number_match:
+                    number = number_match.group()
                     damage += int(number)
                 elif "destroyed" in r:
                     destroyed += 1
