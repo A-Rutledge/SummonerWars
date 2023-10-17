@@ -38,6 +38,10 @@ def clean_log_data(log_data):
                             preprocessed_log.append(f"{current_card_name} received 0 damage")  # Append the "takes 0 damage" line
                             skip_next_line = True
                             
+        #Accounting for Gem Dancer swap
+        if " was switched with " in line:
+            skip_next_line = True
+        
         if not skip_next_line:
             preprocessed_log.append(line)
 
@@ -76,9 +80,8 @@ def parse_attack_data(preprocessed_log_data):
             destroyed = 0
             discarded = 0
             for r in roll:
-                number_match = re.search(r'\d+', r)
-                if number_match:
-                    number = number_match.group()
+                if "damage." in r:
+                    number = re.search(r'\d+',r).group()
                     damage += int(number)
                 elif "destroyed" in r:
                     destroyed += 1
