@@ -181,3 +181,9 @@ I made a last minute change to the damage parser due to one particular event car
 10/17:
 
 The next round of the tournament started so I will be able to double the data that I have soon. I spent today working inside tableau on different ways to visualize some of the trends and see things like most attacks in a single round across games, most damage done in a single attack, etc. Not much progress was made bringing in other games as I got carried away with visualizations. There are some pretty cool ones that I am excited to share so I will need to rework the dashboard to be more visually appealing and show off some of the cooler metrics.
+
+10/23:
+Got caught up in work related issues and family things, but want to finish this up. Here is the current view of the dashboard. Current tasks are to replace player 1/player 2 with actual player names, track win/lose data (excluding timeouts), and track what tournament the data came from as I bring in more. I have 2 full tournaments to bring in now. I am also still exploring different ways to show off the data.
+
+![image]
+
