@@ -174,6 +174,10 @@ Every game wrapped up so I did the full test of the data. I ran the code to get 
 I made a last minute change to the damage parser due to one particular event card saying the word "damage" which caused the parser to break. This change caused a bunch of units to have damage calculations done incorrectly so the first impressions by users were not the best. I quickly corrected this issue and it got some good reception from the discord. The boosted damage on units that deal self damage was noticed by the top players so I may try to work out a way to fix that. For now, I am fixing it on the Tableau side. For the units that have guarunteed self damage every time they attack, I am just subtracting that damage from the total. This works on a dataset this size, but isn't ideal to do in the case of something much larger. I also found and fixed a bug where the Gem Dancer units had a special line of text when they swapped spaces with an enemy and it caused their attack not to be tracked properly. I want to bring in the past tournaments and league games and have users be able to filter between all of them now that the core system is working. I will focus on that tomorrow and see where we go from there.
 
 
+![Me](https://github.com/A-Rutledge/SummonerWars/assets/33138919/8dabec43-bc14-4a2d-ade4-40e37f3bc31f)
+
+
+
 10/17:
 
 The next round of the tournament started so I will be able to double the data that I have soon. I spent today working inside tableau on different ways to visualize some of the trends and see things like most attacks in a single round across games, most damage done in a single attack, etc. Not much progress was made bringing in other games as I got carried away with visualizations. There are some pretty cool ones that I am excited to share so I will need to rework the dashboard to be more visually appealing and show off some of the cooler metrics.
